@@ -6,7 +6,7 @@
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:54:34 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/18 17:58:08 by chillion         ###   ########.fr       */
+/*   Updated: 2023/01/19 18:30:59 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,16 @@ typedef struct s_map
 	int		py;
 	int		ppx;
 	int		ppy;
+	int		degree;
+	int		degree_status;
+	double	resultx;
+	double	resulty;
+	double	resultx2;
+	double	resulty2;
+	double	pixelx;
+	double	pixely;
+	int 	pixels;
+	int 	dir;
 }	t_map;
 
 typedef struct s_var
@@ -61,6 +71,9 @@ typedef struct s_var
 #define XSIZE 64
 
 /* cub3d.c */
+
+double find_end_x(double degree);
+double find_end_y(double degree);
 int		ft_close_event(t_v *v);
 void	ft_reset_paint(t_v *v, int y, int x);
 void	ft_paint_player_pixel(t_v *v, int y, int x);
@@ -71,6 +84,7 @@ void	ft_check_pix_map(t_v *v);
 void	ft_draw_line_map(t_v *v);
 void	ft_stop_all(t_v *v, int exint);
 void	ft_draw_pix_line_dir(t_v *v, int y, int x, int degree);
+void	ft_new_player_pos(t_v *v, int y, int x, int degree);
 
 /* moove.c */
 void	moove_player(int dir, t_v *v);
@@ -79,5 +93,7 @@ int		ft_check_player_up(t_v *v);
 int		ft_check_player_down(t_v *v);
 int		ft_check_player_right(t_v *v);
 int		ft_check_player_left(t_v *v);
+int		ft_moove_ray_left(t_v *v);
+int		ft_moove_ray_right(t_v *v);
 
 #endif

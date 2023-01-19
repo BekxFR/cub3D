@@ -27,3 +27,26 @@
 // }
 
 
+/*
+	static int i = 0;
+	static int tmp_degree = 0;
+
+	if (tmp_degree != v->m.degree)
+	{	
+		i = 0;
+		tmp_degree = v->m.degree;
+	}
+	if (v->m.py > 0)
+	{
+		if (i == 0 && i++ > -1)
+		{
+			int tmp_ppx = v->m.ppx + find_wall_x(v->m.degree);
+			tmp_ppx = ((tmp_ppx + (XSIZE / 2)) / XSIZE);
+			int tmp_ppy = v->m.ppy + find_wall_y(v->m.degree);
+			tmp_ppy = ((tmp_ppy + (XSIZE / 2)) / XSIZE);
+			if (v->m.map[tmp_ppy][tmp_ppx] == '1')
+				return (0);
+			v->m.ppy += find_end_y(v->m.degree);
+			v->m.ppx += find_end_x(v->m.degree);
+		}
+*/
