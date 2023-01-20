@@ -6,7 +6,7 @@
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:46:25 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/20 18:09:15 by chillion         ###   ########.fr       */
+/*   Updated: 2023/01/20 19:06:19 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,9 +220,9 @@ void	ft_draw_pix_ray_dir(t_v *v, double y, double x, int degree)
 	double pixelx = x + (XSIZE / 2);
 	double pixely = y + (XSIZE / 2);
 	int pixels = sqrt((resultx * resultx) + (resulty * resulty));
+	
 	resultx /= pixels;
 	resulty /= pixels;
-	int i = 0;
 	while (1)
 	{
 		if (v->m.map[((int)pixely) / XSIZE][(int)pixelx / XSIZE] == '1' || v->m.map[(int)pixely / XSIZE][((int)pixelx) / XSIZE] == '1')
@@ -230,9 +230,6 @@ void	ft_draw_pix_ray_dir(t_v *v, double y, double x, int degree)
 		ft_my_mlx_pixel_put(&v->ig, pixely, pixelx, ft_rgb_to_int(0, 50, 150, 250));
 		pixelx += resultx;
 		pixely += resulty;
-		if (i == 9)
-			printf("pixelx=%f et pixely=%f et resultx=%f et resulty=%f\n", pixelx, pixely, resultx, resulty);
-		i++;
 	}
 }
 
@@ -314,8 +311,8 @@ void	ft_draw_pix_line_circle(t_v *v, double y, double x)
 	ft_draw_pix_line_dir(v, y, x, v->m.degree);
 	ft_draw_pix_ray_dir(v, y, x, right);
 	ft_draw_pix_ray_dir(v, y, x, left);
-	ft_draw_pix_ray_dir(v, y, x, mid1);
-	ft_draw_pix_ray_dir(v, y, x, mid2);
+	ft_draw_pix_ray_dir(v, y, x, mid1); //
+	ft_draw_pix_ray_dir(v, y, x, mid2); //
 }
 
 void	ft_draw_line_circle(t_v *v, int y, int x)
@@ -523,13 +520,11 @@ void	ft_check_pix_map(t_v *v)
 	i = 0;
 	if (!v->m.map)
 		return ;
-	// ft_paint_map(v, 2, 2);
 	while (v->m.map[i])
 	{
 		j = 0;
 		while (v->m.map[i][j])
 		{
-			// ft_printf("v->m.map[%d][%d]=%c\n", i, j, v->m.map[i][j]);
 			if (v->m.map[i][j] == '1')
 				ft_paint_map(v, i, j);
 			j++;
@@ -546,22 +541,17 @@ void	ft_check_map(t_v *v)
 	i = 0;
 	if (!v->m.map)
 		return ;
-	// ft_paint_map(v, 2, 2);
 	while (v->m.map[i])
 	{
 		j = 0;
 		while (v->m.map[i][j])
 		{
-			// ft_printf("v->m.map[%d][%d]=%c\n", i, j, v->m.map[i][j]);
 			if (v->m.map[i][j] == '1')
 				ft_paint_map(v, i, j);
 			if (v->m.map[i][j] == 'P')
 			{
 				ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
 				ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
-				// ft_draw_line_angle_right(v, i, j);
-				// ft_draw_line_angle_left(v, i, j);
-				
 			}
 			j++;
 		}
@@ -641,8 +631,8 @@ void	ft_init_mlx(t_v *var)
 	ft_init_map_value(var);
 	ft_draw_line_map(var);
 	ft_check_map(var);
+	ft_draw_line_circle3d(var, var->m.ppy, var->m.ppx);
 	mlx_put_image_to_window(var->mlx, var->win, var->ig.img, 0, 0);
-	ft_my_mlx_pixel_put(&var->ig2, 10, 10, ft_rgb_to_int(0, 255, 0, 255));
 	mlx_put_image_to_window(var->mlx, var->win, var->ig2.img, ((var->m.x) * XSIZE), (((var->m.y) * XSIZE) / 2));
 	mlx_loop(var->mlx);
 	// mlx_loop(var->mlx2);

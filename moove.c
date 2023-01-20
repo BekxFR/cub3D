@@ -6,7 +6,7 @@
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:01:48 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/20 18:07:53 by chillion         ###   ########.fr       */
+/*   Updated: 2023/01/20 19:03:39 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,21 @@
 void	moove_player(int dir, t_v *v)
 {
 	if (dir == 'W')
-		dir = ft_check_player_up(v);
+		dir = ft_moove_player(v, 0);
 	if (dir == 'S')
-		dir = ft_check_player_down(v);
+		dir = ft_moove_player(v, 180);
 	if (dir == 'D')
-		dir = ft_check_player_right(v);
+		dir = ft_moove_player(v, 90);
 	if (dir == 'A')
-		dir = ft_check_player_left(v);
+		dir = ft_moove_player(v, 270);
 	if (dir == 'K')
-		dir = ft_moove_ray_right(v);
+		dir = ft_moove_ray(v, 5);
 	if (dir == 'H')
-		dir = ft_moove_ray_left(v);
+		dir = ft_moove_ray(v, (-5));
 	if (dir == 1)
 	{
 		mlx_put_image_to_window(v->mlx, v->win, v->ig.img, 0, 0);
 		mlx_put_image_to_window(v->mlx, v->win, v->ig2.img, ((v->m.x) * XSIZE), (((v->m.y) * XSIZE) / 2));
-		// mlx_put_image_to_window(v->mlx2, v->win2, v->ig2.img, 0, 0);
 	}
 }
 
@@ -54,7 +53,7 @@ int	ft_keypress_event(int key, t_v *v)
 	return (0);
 }
 
-double find_wall_x(double degree)
+double	find_wall_x(double degree)
 {
 	// degree to gradian : 350° × π/180 = 6,109rad
 	/* entre 0 et 180 on renvoie +x et entre 180 et 360 on renvoie -x*/
@@ -66,22 +65,7 @@ double find_wall_x(double degree)
 	return (res);
 }
 
-void	ft_moove_display(t_v *v)
-{
-	if (v->ig.img)
-		mlx_destroy_image(v->mlx, v->ig.img);
-	v->ig.img = mlx_new_image(v->mlx, ((v->m.x) * XSIZE), (v->m.y * XSIZE));
-	if (!v->ig.img)
-		ft_stop_all(v, 1);
-	v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
-	ft_draw_line_map(v);
-	ft_check_pix_map(v);
-	ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
-	ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
-	ft_draw_line_circle3d(v, v->m.ppy, v->m.ppx);
-}
-
-double find_wall_y(double degree)
+double	find_wall_y(double degree)
 {
 	double pi = 3.1415926535897932384626433832;
 	double res = 0;
@@ -90,134 +74,48 @@ double find_wall_y(double degree)
 	return (res * -1);
 }
 
-int	ft_check_player_up(t_v *v)
+void	ft_moove_display(t_v *v)
 {
-	if (v->m.py > 0)
-	{
-		v->m.dir = 0;
-		int tmp_ppx = v->m.ppx + find_wall_x(v->m.degree);
-		tmp_ppx = ((tmp_ppx + (XSIZE / 2)) / XSIZE);
-		int tmp_ppy = v->m.ppy + find_wall_y(v->m.degree);
-		tmp_ppy = ((tmp_ppy + (XSIZE / 2)) / XSIZE);
-		if (v->m.map[tmp_ppy][tmp_ppx] == '1')
-			return (0);
-		v->m.py = (((v->m.ppy + (XSIZE / 2)) / XSIZE));
-		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree);
-		ft_moove_display(v);
-		return (1);
-	}
-	return (0);
-}
-
-int	ft_check_player_down(t_v *v)
-{
-	if (v->m.py < v->m.y - 1)
-	{
-		v->m.dir = 1;
-		int tmp_ppx = v->m.ppx + find_wall_x(v->m.degree + 180);
-		tmp_ppx = ((tmp_ppx + (XSIZE / 2)) / XSIZE);
-		int tmp_ppy = v->m.ppy + find_wall_y(v->m.degree + 180);
-		tmp_ppy = ((tmp_ppy + (XSIZE / 2)) / XSIZE);
-		if (v->m.map[tmp_ppy][tmp_ppx] == '1')
-			return (0);
-		if (v->ig.img)
-			mlx_destroy_image(v->mlx, v->ig.img);
-		v->ig.img = mlx_new_image(v->mlx, ((v->m.x) * XSIZE), (v->m.y * XSIZE));
-		if (!v->ig.img)
-			ft_stop_all(v, 1);
-		v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
-		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree + 180);
-		ft_moove_display(v);
-		v->m.py = (((v->m.ppy + (XSIZE / 2)) / XSIZE));
-		return (1);
-	}
-	return (0);
-}
-
-int	ft_check_player_right(t_v *v)
-{
-	if (v->m.px < v->m.x - 1)
-	{
-		v->m.dir = 2;
-		int tmp_ppx = v->m.ppx + find_wall_x(v->m.degree + 90);
-		tmp_ppx = ((tmp_ppx + (XSIZE / 2)) / XSIZE);
-		int tmp_ppy = v->m.ppy + find_wall_y(v->m.degree + 90);
-		tmp_ppy = ((tmp_ppy + (XSIZE / 2)) / XSIZE);
-		if (v->m.map[tmp_ppy][tmp_ppx] == '1')
-			return (0);
-		if (v->ig.img)
-			mlx_destroy_image(v->mlx, v->ig.img);
-		v->ig.img = mlx_new_image(v->mlx, ((v->m.x) * XSIZE), (v->m.y * XSIZE));
-		if (!v->ig.img)
-			ft_stop_all(v, 1);
-		v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
-		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree + 90);
-		ft_moove_display(v);
-		v->m.px = ((v->m.ppx + (XSIZE / 2)) / XSIZE);
-		return (1);
-	}
-	return (0);
-}
-
-int	ft_check_player_left(t_v *v)
-{
-	if (v->m.px > 0)
-	{
-		v->m.dir = 2;
-		int tmp_ppx = v->m.ppx + find_wall_x(v->m.degree + 270);
-		tmp_ppx = ((tmp_ppx + (XSIZE / 2)) / XSIZE);
-		int tmp_ppy = v->m.ppy + find_wall_y(v->m.degree + 270);
-		tmp_ppy = ((tmp_ppy + (XSIZE / 2)) / XSIZE);
-		if (v->m.map[tmp_ppy][tmp_ppx] == '1')
-			return (0);
-		if (v->ig.img)
-			mlx_destroy_image(v->mlx, v->ig.img);
-		v->ig.img = mlx_new_image(v->mlx, ((v->m.x) * XSIZE), (v->m.y * XSIZE));
-		if (!v->ig.img)
-			ft_stop_all(v, 1);
-		v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
-		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree + 270);
-		ft_moove_display(v);
-		v->m.px = ((v->m.ppx + (XSIZE / 2)) / XSIZE);
-		return (1);
-	}
-	return (0);
-}
-
-int	ft_moove_ray_left(t_v *v)
-{
-	// v->m.degree -= 10;
-	// if (v->m.degree == -10)
-	// 	v->m.degree = 350;
-	v->m.degree -= 5;
-	if (v->m.degree == -5)
-		v->m.degree = 355;
-	ft_printf("v->m.degree=%d\n", v->m.degree);
 	if (v->ig.img)
 		mlx_destroy_image(v->mlx, v->ig.img);
 	v->ig.img = mlx_new_image(v->mlx, ((v->m.x) * XSIZE), (v->m.y * XSIZE));
 	if (!v->ig.img)
 		ft_stop_all(v, 1);
 	v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
+	if (v->ig2.img)
+		mlx_destroy_image(v->mlx, v->ig2.img);
+	v->ig2.img = mlx_new_image(v->mlx, 320, 200);
+	if (!v->ig2.img)
+		ft_stop_all(v, 1);
+	v->ig2.ad = mlx_get_data_addr(v->ig2.img, &v->ig2.bpp, &v->ig2.llen, &v->ig2.en);
+	ft_draw_line_map(v);
+	ft_check_pix_map(v);
+	ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
+	ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
+	ft_draw_line_circle3d(v, v->m.ppy, v->m.ppx);
+}
+
+int	ft_moove_player(t_v *v, int degree)
+{
+	double tmp_ppx = v->m.ppx + find_wall_x(v->m.degree + degree);
+	tmp_ppx = ((tmp_ppx + (XSIZE / 2)) / XSIZE);
+	double tmp_ppy = v->m.ppy + find_wall_y(v->m.degree + degree);
+	tmp_ppy = ((tmp_ppy + (XSIZE / 2)) / XSIZE);
+	if (v->m.map[(int)tmp_ppy][(int)tmp_ppx] == '1')
+		return (0);
+	ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree + degree);
 	ft_moove_display(v);
+	v->m.py = (((v->m.ppy + (XSIZE / 2)) / XSIZE));
 	return (1);
 }
 
-int	ft_moove_ray_right(t_v *v)
+int	ft_moove_ray(t_v *v, int sense)
 {
-	// v->m.degree += 10;
-	// if (v->m.degree == 370)
-	// 	v->m.degree = 10;
-	v->m.degree += 5;
+	v->m.degree += sense;
+	if (v->m.degree == -5)
+		v->m.degree = 355;
 	if (v->m.degree == 365)
 		v->m.degree = 5;
-	ft_printf("v->m.degree=%d\n", v->m.degree);
-	if (v->ig.img)
-		mlx_destroy_image(v->mlx, v->ig.img);
-	v->ig.img = mlx_new_image(v->mlx, ((v->m.x) * XSIZE), (v->m.y * XSIZE));
-	if (!v->ig.img)
-		ft_stop_all(v, 1);
-	v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
 	ft_moove_display(v);
 	return (1);
 }

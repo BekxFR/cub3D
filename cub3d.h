@@ -6,7 +6,7 @@
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:54:34 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/20 16:58:15 by chillion         ###   ########.fr       */
+/*   Updated: 2023/01/20 19:03:29 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,11 @@ void	ft_new_player_pos(t_v *v, double y, double x, int degree);
 /* moove.c */
 void	moove_player(int dir, t_v *v);
 int		ft_keypress_event(int key, t_v *v);
-int		ft_check_player_up(t_v *v);
-int		ft_check_player_down(t_v *v);
-int		ft_check_player_right(t_v *v);
-int		ft_check_player_left(t_v *v);
-int		ft_moove_ray_left(t_v *v);
-int		ft_moove_ray_right(t_v *v);
+double	find_wall_x(double degree);
+double	find_wall_y(double degree);
+void	ft_moove_display(t_v *v);
+int		ft_moove_player(t_v *v, int degree);
+int		ft_moove_ray(t_v *v, int sense);
 
 /* display3d.c */
 void ft_draw_line_dir3d(t_v *v, int y, int x, double degree, double i, double *tab);

@@ -6,7 +6,7 @@
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:10:11 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/20 18:06:58 by chillion         ###   ########.fr       */
+/*   Updated: 2023/01/20 19:07:12 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,6 @@ void ft_draw_line_dir3d(t_v *v, int y, int x, double degree, double i, double *t
 
 void	ft_draw_line_circle3d(t_v *v, int y, int x)
 {
-	if (v->ig2.img)
-		mlx_destroy_image(v->mlx, v->ig2.img);
-	v->ig2.img = mlx_new_image(v->mlx, 320, 200);
-	if (!v->ig2.img)
-		ft_stop_all(v, 1);
-	v->ig2.ad = mlx_get_data_addr(v->ig2.img, &v->ig2.bpp, &v->ig2.llen, &v->ig2.en);
 	int right = v->m.degree + 30;
 	double left = v->m.degree - 30;
 	double i = 0.0;
