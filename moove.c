@@ -80,8 +80,8 @@ int	ft_check_player_up(t_v *v)
 		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree);
 		ft_draw_line_map(v);
 		ft_check_pix_map(v);
-		ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
 		ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
+		// ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
 		v->m.py = (((v->m.ppy + (XSIZE / 2)) / XSIZE));
 		return (1);
 	}
@@ -108,8 +108,8 @@ int	ft_check_player_down(t_v *v)
 		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree + 180);
 		ft_draw_line_map(v);
 		ft_check_pix_map(v);
-		ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
 		ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
+		// ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
 		v->m.py = (((v->m.ppy + (XSIZE / 2)) / XSIZE));
 		return (1);
 	}
@@ -136,8 +136,8 @@ int	ft_check_player_right(t_v *v)
 		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree + 90);
 		ft_draw_line_map(v);
 		ft_check_pix_map(v);
-		ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
 		ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
+		// ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
 		v->m.px = ((v->m.ppx + (XSIZE / 2)) / XSIZE);
 		return (1);
 	}
@@ -164,8 +164,8 @@ int	ft_check_player_left(t_v *v)
 		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree + 270);
 		ft_draw_line_map(v);
 		ft_check_pix_map(v);
-		ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
 		ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
+		// ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
 		v->m.px = ((v->m.ppx + (XSIZE / 2)) / XSIZE);
 		return (1);
 	}
@@ -191,6 +191,7 @@ int	ft_moove_ray_left(t_v *v)
 	ft_draw_line_map(v);
 	ft_check_pix_map(v);
 	ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
+	// ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
 	return (1);
 }
 
@@ -212,5 +213,6 @@ int	ft_moove_ray_right(t_v *v)
 	ft_draw_line_map(v);
 	ft_check_pix_map(v);
 	ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
+	// ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
 	return (1);
 }

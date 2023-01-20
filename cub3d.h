@@ -6,7 +6,7 @@
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:54:34 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/20 12:05:21 by chillion         ###   ########.fr       */
+/*   Updated: 2023/01/20 13:36:07 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,12 @@ typedef struct s_map
 	double	resulty2;
 	double	pixelx;
 	double	pixely;
+	double	ppxux;
+	double	ppyuy;
+	double	ppxrx;
+	double	ppyry;
+	double	ppxlx;
+	double	ppyly;
 	int 	pixels;
 	int 	dir;
 }	t_map;
@@ -71,9 +77,8 @@ typedef struct s_var
 #define XSIZE 64
 
 /* cub3d.c */
-
-double find_end_x(double degree);
-double find_end_y(double degree);
+double	find_end_x(double degree);
+double	find_end_y(double degree);
 int		ft_close_event(t_v *v);
 void	ft_reset_paint(t_v *v, int y, int x);
 void	ft_paint_player_pixel(t_v *v, int y, int x);
