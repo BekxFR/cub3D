@@ -6,7 +6,7 @@
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:54:34 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/20 13:36:07 by chillion         ###   ########.fr       */
+/*   Updated: 2023/01/20 16:58:15 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_data {
 	int		color1;
 	int		color2;
 	int		color3;
+
 }	t_data;
 
 typedef struct s_map
@@ -70,13 +71,18 @@ typedef struct s_var
 {
 	void	*mlx;
 	void	*win;
+	void	*mlx2;
+	void	*win2;
 	t_data	ig;
+	t_data	ig2;
 	t_map	m;
 }	t_v;
 
 #define XSIZE 64
 
 /* cub3d.c */
+void	ft_my_mlx_pixel_put(t_data *data, int i, int j, int color);
+int	ft_rgb_to_int(int t, int r, int g, int b);
 double	find_end_x(double degree);
 double	find_end_y(double degree);
 int		ft_close_event(t_v *v);
@@ -100,5 +106,9 @@ int		ft_check_player_right(t_v *v);
 int		ft_check_player_left(t_v *v);
 int		ft_moove_ray_left(t_v *v);
 int		ft_moove_ray_right(t_v *v);
+
+/* display3d.c */
+void ft_draw_line_dir3d(t_v *v, int y, int x, double degree, double i, double *tab);
+void	ft_draw_line_circle3d(t_v *v, int y, int x);
 
 #endif

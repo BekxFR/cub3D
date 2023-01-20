@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   moove.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/20 16:01:48 by chillion          #+#    #+#             */
+/*   Updated: 2023/01/20 18:07:53 by chillion         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "cub3d.h"
 
@@ -16,7 +27,11 @@ void	moove_player(int dir, t_v *v)
 	if (dir == 'H')
 		dir = ft_moove_ray_left(v);
 	if (dir == 1)
+	{
 		mlx_put_image_to_window(v->mlx, v->win, v->ig.img, 0, 0);
+		mlx_put_image_to_window(v->mlx, v->win, v->ig2.img, ((v->m.x) * XSIZE), (((v->m.y) * XSIZE) / 2));
+		// mlx_put_image_to_window(v->mlx2, v->win2, v->ig2.img, 0, 0);
+	}
 }
 
 int	ft_keypress_event(int key, t_v *v)
@@ -51,6 +66,21 @@ double find_wall_x(double degree)
 	return (res);
 }
 
+void	ft_moove_display(t_v *v)
+{
+	if (v->ig.img)
+		mlx_destroy_image(v->mlx, v->ig.img);
+	v->ig.img = mlx_new_image(v->mlx, ((v->m.x) * XSIZE), (v->m.y * XSIZE));
+	if (!v->ig.img)
+		ft_stop_all(v, 1);
+	v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
+	ft_draw_line_map(v);
+	ft_check_pix_map(v);
+	ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
+	ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
+	ft_draw_line_circle3d(v, v->m.ppy, v->m.ppx);
+}
+
 double find_wall_y(double degree)
 {
 	double pi = 3.1415926535897932384626433832;
@@ -71,18 +101,9 @@ int	ft_check_player_up(t_v *v)
 		tmp_ppy = ((tmp_ppy + (XSIZE / 2)) / XSIZE);
 		if (v->m.map[tmp_ppy][tmp_ppx] == '1')
 			return (0);
-		if (v->ig.img)
-			mlx_destroy_image(v->mlx, v->ig.img);
-		v->ig.img = mlx_new_image(v->mlx, ((v->m.x) * XSIZE), (v->m.y * XSIZE));
-		if (!v->ig.img)
-			ft_stop_all(v, 1);
-		v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
-		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree);
-		ft_draw_line_map(v);
-		ft_check_pix_map(v);
-		ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
-		ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
 		v->m.py = (((v->m.ppy + (XSIZE / 2)) / XSIZE));
+		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree);
+		ft_moove_display(v);
 		return (1);
 	}
 	return (0);
@@ -106,10 +127,7 @@ int	ft_check_player_down(t_v *v)
 			ft_stop_all(v, 1);
 		v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
 		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree + 180);
-		ft_draw_line_map(v);
-		ft_check_pix_map(v);
-		ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
-		ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
+		ft_moove_display(v);
 		v->m.py = (((v->m.ppy + (XSIZE / 2)) / XSIZE));
 		return (1);
 	}
@@ -134,10 +152,7 @@ int	ft_check_player_right(t_v *v)
 			ft_stop_all(v, 1);
 		v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
 		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree + 90);
-		ft_draw_line_map(v);
-		ft_check_pix_map(v);
-		ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
-		ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
+		ft_moove_display(v);
 		v->m.px = ((v->m.ppx + (XSIZE / 2)) / XSIZE);
 		return (1);
 	}
@@ -162,16 +177,12 @@ int	ft_check_player_left(t_v *v)
 			ft_stop_all(v, 1);
 		v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
 		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree + 270);
-		ft_draw_line_map(v);
-		ft_check_pix_map(v);
-		ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
-		ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
+		ft_moove_display(v);
 		v->m.px = ((v->m.ppx + (XSIZE / 2)) / XSIZE);
 		return (1);
 	}
 	return (0);
 }
-
 
 int	ft_moove_ray_left(t_v *v)
 {
@@ -188,10 +199,7 @@ int	ft_moove_ray_left(t_v *v)
 	if (!v->ig.img)
 		ft_stop_all(v, 1);
 	v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
-	ft_draw_line_map(v);
-	ft_check_pix_map(v);
-	ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
-	ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
+	ft_moove_display(v);
 	return (1);
 }
 
@@ -210,9 +218,6 @@ int	ft_moove_ray_right(t_v *v)
 	if (!v->ig.img)
 		ft_stop_all(v, 1);
 	v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
-	ft_draw_line_map(v);
-	ft_check_pix_map(v);
-	ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
-	ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
+	ft_moove_display(v);
 	return (1);
 }

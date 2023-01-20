@@ -6,7 +6,7 @@
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:46:25 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/20 15:57:15 by chillion         ###   ########.fr       */
+/*   Updated: 2023/01/20 18:09:15 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -615,21 +615,37 @@ void	ft_init_mlx(t_v *var)
 	var->mlx = mlx_init();
 	if (!var->mlx)
 		return (exit(1));
+	// var->mlx2 = mlx_init();
+	// if (!var->mlx2)
+	// 	return (exit(1));
 	ft_printf("var->m.y=%d et var->m.x=%d\n", var->m.y, var->m.x);
-	var->win = mlx_new_window(var->mlx, ((var->m.x) * XSIZE), (var->m.y * XSIZE), "cub3D");
+	var->win = mlx_new_window(var->mlx, ((var->m.x) * XSIZE) + (320 * 2), (var->m.y * XSIZE), "cub3D");
 	if (!var->win)
 		return (mlx_destroy_display(var->mlx), free(var->mlx), exit(1));
 	var->ig.img = mlx_new_image(var->mlx, ((var->m.x) * XSIZE), (var->m.y * XSIZE));
 	if (!var->ig.img)
 		ft_stop_all(var, 1);
 	var->ig.ad = mlx_get_data_addr(var->ig.img, &var->ig.bpp, &var->ig.llen, &var->ig.en);
+
+	// var->win2 = mlx_new_window(var->mlx2, 1320, 1200, "cub3D");
+	// if (!var->win2)
+	// 	return (mlx_destroy_display(var->mlx2), free(var->mlx2), exit(1));
+	var->ig2.img = mlx_new_image(var->mlx, 320, 200);
+	if (!var->ig2.img)
+		ft_stop_all(var, 1);
+	var->ig2.ad = mlx_get_data_addr(var->ig2.img, &var->ig2.bpp, &var->ig2.llen, &var->ig2.en);
 	mlx_hook(var->win, 2, 1L << 0, ft_keypress_event, var);
 	mlx_hook(var->win, 17, 1L << 17, ft_close_event, var);
+	// mlx_hook(var->win2, 2, 1L << 0, ft_keypress_event, var);
+	// mlx_hook(var->win2, 17, 1L << 17, ft_close_event, var);
 	ft_init_map_value(var);
 	ft_draw_line_map(var);
 	ft_check_map(var);
 	mlx_put_image_to_window(var->mlx, var->win, var->ig.img, 0, 0);
+	ft_my_mlx_pixel_put(&var->ig2, 10, 10, ft_rgb_to_int(0, 255, 0, 255));
+	mlx_put_image_to_window(var->mlx, var->win, var->ig2.img, ((var->m.x) * XSIZE), (((var->m.y) * XSIZE) / 2));
 	mlx_loop(var->mlx);
+	// mlx_loop(var->mlx2);
 }
 
 int	main(void)
