@@ -6,7 +6,7 @@
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:46:25 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/20 15:49:00 by chillion         ###   ########.fr       */
+/*   Updated: 2023/01/20 15:57:15 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,8 +171,8 @@ void	ft_new_player_pos(t_v *v, double y, double x, int degree)
 {
 	double resultx = find_end_x(degree);
 	double resulty = find_end_y(degree);
-	double pixelx = x;// + (XSIZE / 2);
-	double pixely = y;// + (XSIZE / 2);
+	double pixelx = x + (XSIZE / 2);
+	double pixely = y + (XSIZE / 2);
 	int pixels = sqrt((resultx * resultx) + (resulty * resulty));
 	int i = 0;
 	resultx /= pixels;
@@ -186,8 +186,8 @@ void	ft_new_player_pos(t_v *v, double y, double x, int degree)
 		pixely += resulty;
 		i++;
 	}
-	v->m.ppx = pixelx;// - (XSIZE / 2);
-	v->m.ppy = pixely;// - (XSIZE / 2);
+	v->m.ppx = pixelx - (XSIZE / 2);
+	v->m.ppy = pixely - (XSIZE / 2);
 }
 
 void	ft_draw_pix_line_dir(t_v *v, double y, double x, int degree)
