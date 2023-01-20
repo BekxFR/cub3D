@@ -71,22 +71,18 @@ int	ft_check_player_up(t_v *v)
 		tmp_ppy = ((tmp_ppy + (XSIZE / 2)) / XSIZE);
 		if (v->m.map[tmp_ppy][tmp_ppx] == '1')
 			return (0);
-		// ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree);
-		// v->m.ppy += find_end_y(v->m.degree);
-		// v->m.ppx += find_end_x(v->m.degree);
 		if (v->ig.img)
 			mlx_destroy_image(v->mlx, v->ig.img);
 		v->ig.img = mlx_new_image(v->mlx, ((v->m.x) * XSIZE), (v->m.y * XSIZE));
 		if (!v->ig.img)
 			ft_stop_all(v, 1);
 		v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
-		// ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx); //
 		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree);
 		ft_draw_line_map(v);
 		ft_check_pix_map(v);
 		ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
 		ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
-		v->m.py = (((v->m.ppy + (XSIZE / 2)) / 64));
+		v->m.py = (((v->m.ppy + (XSIZE / 2)) / XSIZE));
 		return (1);
 	}
 	return (0);
@@ -103,20 +99,18 @@ int	ft_check_player_down(t_v *v)
 		tmp_ppy = ((tmp_ppy + (XSIZE / 2)) / XSIZE);
 		if (v->m.map[tmp_ppy][tmp_ppx] == '1')
 			return (0);
-		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree + 180);
-		// v->m.ppy += find_end_y(v->m.degree + 180);
-		// v->m.ppx += find_end_x(v->m.degree + 180);
 		if (v->ig.img)
 			mlx_destroy_image(v->mlx, v->ig.img);
 		v->ig.img = mlx_new_image(v->mlx, ((v->m.x) * XSIZE), (v->m.y * XSIZE));
 		if (!v->ig.img)
 			ft_stop_all(v, 1);
 		v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
+		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree + 180);
 		ft_draw_line_map(v);
 		ft_check_pix_map(v);
 		ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
 		ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
-		v->m.py = (((v->m.ppy + (XSIZE / 2)) / 64));
+		v->m.py = (((v->m.ppy + (XSIZE / 2)) / XSIZE));
 		return (1);
 	}
 	return (0);
@@ -133,20 +127,18 @@ int	ft_check_player_right(t_v *v)
 		tmp_ppy = ((tmp_ppy + (XSIZE / 2)) / XSIZE);
 		if (v->m.map[tmp_ppy][tmp_ppx] == '1')
 			return (0);
-		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree + 90);
-		// v->m.ppy += find_end_y(v->m.degree + 90);
-		// v->m.ppx += find_end_x(v->m.degree + 90);
 		if (v->ig.img)
 			mlx_destroy_image(v->mlx, v->ig.img);
 		v->ig.img = mlx_new_image(v->mlx, ((v->m.x) * XSIZE), (v->m.y * XSIZE));
 		if (!v->ig.img)
 			ft_stop_all(v, 1);
 		v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
+		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree + 90);
 		ft_draw_line_map(v);
 		ft_check_pix_map(v);
 		ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
 		ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
-		v->m.px = ((v->m.ppx + (XSIZE / 2)) / 64);
+		v->m.px = ((v->m.ppx + (XSIZE / 2)) / XSIZE);
 		return (1);
 	}
 	return (0);
@@ -163,20 +155,18 @@ int	ft_check_player_left(t_v *v)
 		tmp_ppy = ((tmp_ppy + (XSIZE / 2)) / XSIZE);
 		if (v->m.map[tmp_ppy][tmp_ppx] == '1')
 			return (0);
-		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree + 270);
-		// v->m.ppy += find_end_y(v->m.degree + 270);
-		// v->m.ppx += find_end_x(v->m.degree + 270);
 		if (v->ig.img)
 			mlx_destroy_image(v->mlx, v->ig.img);
 		v->ig.img = mlx_new_image(v->mlx, ((v->m.x) * XSIZE), (v->m.y * XSIZE));
 		if (!v->ig.img)
 			ft_stop_all(v, 1);
 		v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
+		ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree + 270);
 		ft_draw_line_map(v);
 		ft_check_pix_map(v);
 		ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
 		ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
-		v->m.px = ((v->m.ppx + (XSIZE / 2)) / 64);
+		v->m.px = ((v->m.ppx + (XSIZE / 2)) / XSIZE);
 		return (1);
 	}
 	return (0);
@@ -185,9 +175,12 @@ int	ft_check_player_left(t_v *v)
 
 int	ft_moove_ray_left(t_v *v)
 {
-	v->m.degree -= 10;
-	if (v->m.degree == -10)
-		v->m.degree = 350;
+	// v->m.degree -= 10;
+	// if (v->m.degree == -10)
+	// 	v->m.degree = 350;
+	v->m.degree -= 5;
+	if (v->m.degree == -5)
+		v->m.degree = 355;
 	ft_printf("v->m.degree=%d\n", v->m.degree);
 	if (v->ig.img)
 		mlx_destroy_image(v->mlx, v->ig.img);
@@ -203,9 +196,12 @@ int	ft_moove_ray_left(t_v *v)
 
 int	ft_moove_ray_right(t_v *v)
 {
-	v->m.degree += 10;
-	if (v->m.degree == 370)
-		v->m.degree = 10;
+	// v->m.degree += 10;
+	// if (v->m.degree == 370)
+	// 	v->m.degree = 10;
+	v->m.degree += 5;
+	if (v->m.degree == 365)
+		v->m.degree = 5;
 	ft_printf("v->m.degree=%d\n", v->m.degree);
 	if (v->ig.img)
 		mlx_destroy_image(v->mlx, v->ig.img);

@@ -6,7 +6,7 @@
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:46:25 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/19 18:56:19 by chillion         ###   ########.fr       */
+/*   Updated: 2023/01/20 12:08:21 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ void	ft_draw_line_dir(t_v *v, int y, int x, int degree)
 	}
 }
 
-void	ft_new_player_pos(t_v *v, int y, int x, int degree)
+void	ft_new_player_pos(t_v *v, double y, double x, int degree)
 {
 	double resultx = find_end_x(degree);
 	double resulty = find_end_y(degree);
@@ -190,7 +190,7 @@ void	ft_new_player_pos(t_v *v, int y, int x, int degree)
 	v->m.ppy = pixely - (XSIZE / 2);
 }
 
-void	ft_draw_pix_line_dir(t_v *v, int y, int x, int degree)
+void	ft_draw_pix_line_dir(t_v *v, double y, double x, int degree)
 {
 	if (v->m.degree_status != v->m.degree)
 	{
@@ -214,7 +214,7 @@ void	ft_draw_pix_line_dir(t_v *v, int y, int x, int degree)
 	}
 }
 
-void	ft_draw_pix_ray_dir(t_v *v, int y, int x, int degree)
+void	ft_draw_pix_ray_dir(t_v *v, double y, double x, int degree)
 {
 	double resultx = find_end_x(degree);
 	double resulty = find_end_y(degree);
@@ -223,6 +223,7 @@ void	ft_draw_pix_ray_dir(t_v *v, int y, int x, int degree)
 	int pixels = sqrt((resultx * resultx) + (resulty * resulty));
 	resultx /= pixels;
 	resulty /= pixels;
+	int i = 0;
 	while (1)
 	{
 		if (v->m.map[((int)pixely) / XSIZE][(int)pixelx / XSIZE] == '1' || v->m.map[(int)pixely / XSIZE][((int)pixelx) / XSIZE] == '1')
@@ -230,6 +231,9 @@ void	ft_draw_pix_ray_dir(t_v *v, int y, int x, int degree)
 		ft_my_mlx_pixel_put(&v->ig, pixely, pixelx, ft_rgb_to_int(0, 50, 150, 250));
 		pixelx += resultx;
 		pixely += resulty;
+		if (i == 9)
+			printf("pixelx=%f et pixely=%f et resultx=%f et resulty=%f\n", pixelx, pixely, resultx, resulty);
+		i++;
 	}
 }
 
@@ -285,6 +289,7 @@ void	ft_draw_line_angle_right(t_v *v, int y, int x, int degree)
 		ft_my_mlx_pixel_put(&v->ig, pixely, pixelx, ft_rgb_to_int(0, 50, 150, 250));
 		pixelx += deltax;
 		pixely += deltay;
+		ft_printf("pixelx=%d et pixely=%d et deltax=%d et deltay=%d\n", pixelx, pixely, deltax, deltay);
 		// --pixels;
 	}
 }
@@ -372,7 +377,7 @@ void	ft_draw_line_angle_left(t_v *v, int y, int x, int degree)
 // 	}
 // }
 
-void	ft_draw_pix_line_circle(t_v *v, int y, int x)
+void	ft_draw_pix_line_circle(t_v *v, double y, double x)
 {
 	int right = v->m.degree + 30;
 	int left = v->m.degree - 30;

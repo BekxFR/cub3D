@@ -6,7 +6,7 @@
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:54:34 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/19 18:30:59 by chillion         ###   ########.fr       */
+/*   Updated: 2023/01/20 12:05:21 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ typedef struct s_map
 	int		y;
 	int		px;
 	int		py;
-	int		ppx;
-	int		ppy;
+	double	ppx;
+	double	ppy;
 	int		degree;
 	int		degree_status;
 	double	resultx;
@@ -78,13 +78,13 @@ int		ft_close_event(t_v *v);
 void	ft_reset_paint(t_v *v, int y, int x);
 void	ft_paint_player_pixel(t_v *v, int y, int x);
 void	ft_draw_line_circle(t_v *v, int y, int x);
-void	ft_draw_pix_line_circle(t_v *v, int y, int x);
+void	ft_draw_pix_line_circle(t_v *v, double y, double x);
 void	ft_check_map(t_v *v);
 void	ft_check_pix_map(t_v *v);
 void	ft_draw_line_map(t_v *v);
 void	ft_stop_all(t_v *v, int exint);
-void	ft_draw_pix_line_dir(t_v *v, int y, int x, int degree);
-void	ft_new_player_pos(t_v *v, int y, int x, int degree);
+void	ft_draw_pix_line_dir(t_v *v, double y, double x, int degree);
+void	ft_new_player_pos(t_v *v, double y, double x, int degree);
 
 /* moove.c */
 void	moove_player(int dir, t_v *v);
