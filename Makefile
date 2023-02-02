@@ -6,17 +6,19 @@
 #    By: chillion <chillion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 12:07:22 by chillion          #+#    #+#              #
-#    Updated: 2023/01/20 16:12:07 by chillion         ###   ########.fr        #
+#    Updated: 2023/02/02 15:47:37 by chillion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY : all test norm clean fclean re
 
 NAME := cub3d.a
-SOFT_NAME := cub3d
+SOFT_NAME := cub3D
+NAME_BONUS := cub3d_bonus.a
+SOFT_BONUS := cub3D_bonus
 
 CC := gcc
-FLAGS := -g3 -Wall -Wextra -Werror -I includes/
+FLAGS := -g3 -Wall -Wextra -Werror -I includes/ -I.. -MMD -MP
 SRC_DIR := sources/
 OBJ_DIR := objects/
 AR := ar rc
@@ -34,9 +36,15 @@ MAGENTA = \033[0;35m
 CYAN = \033[0;36m
 NC = \033[0m
 
-SRCS =	cub3d.c \
-		moove.c \
-		display3d.c \
+SRCS =	color.c	cub3d.c	cub3d_utils.c	ft_check_arg2.c	ft_check_arg.c	ft_check_display_map.c	\
+		ft_clean.c	ft_control.c	ft_display_3d.c	ft_draw_line_map.c	ft_error.c	ft_init2.c	\
+		ft_init.c	ft_init_map_value.c	ft_init_sprites.c	ft_raycast2.c	ft_raycast.c	map_attack2.c	\
+		map_attack.c	map_checker2.c	map_checker.c	map_init.c	moove2.c	moove.c	\
+
+BONUS =	color.c	cub3d_bonus.c	cub3d_utils.c	ft_check_arg2.c	ft_check_arg.c	ft_check_display_map.c	\
+		ft_clean.c	ft_control.c	ft_display_3d.c	ft_draw_line_map_bonus.c	ft_error.c	ft_init2.c	\
+		ft_init_bonus.c	ft_init_map_value.c	ft_init_sprites.c	ft_raycast2.c	ft_raycast_bonus.c	map_attack2.c	\
+		map_attack.c	map_checker2.c	map_checker.c	map_init.c	moove2_bonus.c	moove_bonus.c	\
 
 LIBFT := libs/libft/libft.a
 MLX := libs/minilibx-linux/libmlx_Linux.a
@@ -48,27 +56,29 @@ BOBJS = $(BONUS:%.c=%.o)
 NORM = $(wildcard *.c) $(wildcard *.h)
 
 OBJ = $(addprefix $(OBJ_DIR),$(OBJS))
+DEPS = $(OBJ:%.o=%.d)
 BOBJ = $(addprefix $(OBJ_DIR),$(BOBJS))
+DEPSB = $(BOBJ:%.o=%.d)
 
-OBJF := .cache_exists
+OBJF := ${OBJ_DIR}.cache_exists
 
-all : $(OBJF) ${LIBFT} ${SOFT_NAME}
+all : ${SOFT_NAME}
 
 $(OBJF) :
-	@touch .cache_exists
 	@mkdir -p ${OBJ_DIR}
+	@touch ${OBJF}
 
 ${LIBFT} :
-	${MAKE} all -C libs/minilibx-linux
 	${MAKE} all -C libs/libft
-	cp ${LIBFT} ${NAME}
+	${MAKE} all -C libs/minilibx-linux
+	@cp ${LIBFT} ${NAME}
 
 ${NAME} : ${OBJ}
 	@echo "${BLUE}###${NC}Update de l'archive ${NAME}${BLUE}###${MAGENTA}"
 	${AR} ${NAME} ${MLX} ${OBJ}
 	@echo "${NC}"
 
-${OBJ_DIR}%.o : %.c
+${OBJ_DIR}%.o : %.c ${LIBFT} $(OBJF) Makefile
 	@echo "${BLUE}###${NC}Creation du fichier ${@:%.c=%.o}${BLUE}###${ORANGE}"
 	${CC} ${FLAGS} ${MLXFLAGS} -c $< -o $@
 	@echo "${NC}"
@@ -76,6 +86,13 @@ ${OBJ_DIR}%.o : %.c
 ${SOFT_NAME} : ${NAME}
 	@echo "${BLUE}###${NC}Creation du fichier ${SOFT_NAME}${BLUE}###${ORANGE}"
 	${CC} ${NAME} ${FLAGS} ${MLXFLAGS} -o ${SOFT_NAME}
+	@echo "${NC}"
+
+bonus : ${SOFT_BONUS}
+
+${SOFT_BONUS} : ${BOBJ}
+	@echo "${BLUE}###${NC}Creation du fichier ${SOFT_BONUS}${BLUE}###${ORANGE}"
+	${CC} ${BOBJ} ${LIBFT} ${FLAGS} ${MLXFLAGS} -o ${SOFT_BONUS}
 	@echo "${NC}"
 
 clean : 
@@ -95,3 +112,5 @@ re : fclean all
 norm :
 	${MAKE} norm -C libs/libft
 	@norminette $(NORM) | grep -v OK! || true
+
+-include ${DEPS} ${DEPSB}
