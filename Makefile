@@ -6,7 +6,7 @@
 #    By: chillion <chillion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 12:07:22 by chillion          #+#    #+#              #
-#    Updated: 2023/02/02 15:47:37 by chillion         ###   ########.fr        #
+#    Updated: 2023/01/27 20:30:55 by chillion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME_BONUS := cub3d_bonus.a
 SOFT_BONUS := cub3D_bonus
 
 CC := gcc
-FLAGS := -g3 -Wall -Wextra -Werror -I includes/ -I.. -MMD -MP
+FLAGS := -g3 -Wall -Wextra -Werror -I includes/
 SRC_DIR := sources/
 OBJ_DIR := objects/
 AR := ar rc
@@ -56,29 +56,27 @@ BOBJS = $(BONUS:%.c=%.o)
 NORM = $(wildcard *.c) $(wildcard *.h)
 
 OBJ = $(addprefix $(OBJ_DIR),$(OBJS))
-DEPS = $(OBJ:%.o=%.d)
 BOBJ = $(addprefix $(OBJ_DIR),$(BOBJS))
-DEPSB = $(BOBJ:%.o=%.d)
 
-OBJF := ${OBJ_DIR}.cache_exists
+OBJF := .cache_exists
 
-all : ${SOFT_NAME}
+all : $(OBJF) ${LIBFT} ${SOFT_NAME}
 
 $(OBJF) :
-	@mkdir -p ${OBJ_DIR}
 	@touch ${OBJF}
+	@mkdir -p ${OBJ_DIR}
 
 ${LIBFT} :
-	${MAKE} all -C libs/libft
 	${MAKE} all -C libs/minilibx-linux
-	@cp ${LIBFT} ${NAME}
+	${MAKE} all -C libs/libft
+	cp ${LIBFT} ${NAME}
 
 ${NAME} : ${OBJ}
 	@echo "${BLUE}###${NC}Update de l'archive ${NAME}${BLUE}###${MAGENTA}"
 	${AR} ${NAME} ${MLX} ${OBJ}
 	@echo "${NC}"
 
-${OBJ_DIR}%.o : %.c ${LIBFT} $(OBJF) Makefile
+${OBJ_DIR}%.o : %.c
 	@echo "${BLUE}###${NC}Creation du fichier ${@:%.c=%.o}${BLUE}###${ORANGE}"
 	${CC} ${FLAGS} ${MLXFLAGS} -c $< -o $@
 	@echo "${NC}"
@@ -88,7 +86,7 @@ ${SOFT_NAME} : ${NAME}
 	${CC} ${NAME} ${FLAGS} ${MLXFLAGS} -o ${SOFT_NAME}
 	@echo "${NC}"
 
-bonus : ${SOFT_BONUS}
+bonus : $(OBJF) ${LIBFT} ${SOFT_BONUS}
 
 ${SOFT_BONUS} : ${BOBJ}
 	@echo "${BLUE}###${NC}Creation du fichier ${SOFT_BONUS}${BLUE}###${ORANGE}"
@@ -112,5 +110,3 @@ re : fclean all
 norm :
 	${MAKE} norm -C libs/libft
 	@norminette $(NORM) | grep -v OK! || true
-
--include ${DEPS} ${DEPSB}
