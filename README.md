@@ -12,7 +12,7 @@
   gcl https://github.com/BekxFR/cub3D.git
   cd cub3d
   make
-  ./cub3D maps/1.cub
+  ./cub3D map/1.cub
 ```
 
 ## Project Overview:
