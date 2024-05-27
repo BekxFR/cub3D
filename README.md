@@ -1,5 +1,20 @@
 # Cub3D: Dive into the Retro Gaming World with Your Own RayCaster!
 
+|    Project Name    |                                                                       cub3d                                                                       |
+| :----------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------: |
+|    Description     |                                             A 3D game created from scratch written in C using raycasting                                            |
+|    Technologies    | <a href="#"><img alt="C" src="https://custom-icon-badges.demolab.com/badge/C-03599C.svg?logo=c-in-hexagon&logoColor=white&style=for-the-badge"></a> |
+| External libraries |     open(), close(), read(), write(), printf(), malloc(), free(), perror(), strerror(), exit(), All functions from math.h, All functions of the MinilibX      |
+
+## Installation
+
+```bash
+  gcl https://github.com/BekxFR/cub3D.git
+  cd cub3d
+  make
+  ./cub3D maps/1.cub
+```
+
 ## Project Overview:
 
 ### Summary:
