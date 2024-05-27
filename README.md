@@ -10,7 +10,7 @@
 
 ```bash
   gcl https://github.com/BekxFR/cub3D.git
-  cd cub3d
+  cd cub3D
   make
   ./cub3D map/1.cub
 ```
